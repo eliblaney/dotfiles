@@ -1,0 +1,8 @@
+.DS_Store
+tags
+tags.lock
+tags.temp
+.*.swp
+.idea/
+*.iml
+.env

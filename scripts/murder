@@ -1,0 +1,58 @@
+#!/bin/sh
+
+useSudo=false
+sig="-9"
+regex=""
+while getopts ":hstS:r" opt; do
+	case ${opt} in
+		h)
+			echo
+			echo "Usage: murder [-hstr] [-S signal] <name>"
+			echo "  -h     Display this help message."
+			echo "  -s     Use root privileges."
+			echo "  -t     Send SIGTERM (soft kill)."
+			echo "  -S     Send custom signal."
+			echo "  -r     Enable regex."
+			echo
+			exit 0
+			;;
+		s)
+			echo "Warning: Using root privileges"
+			useSudo=true
+			;;
+		t)
+			sig=""
+			;;
+		S)
+			sig="-$OPTARG"
+			;;
+		r)
+			regex="-E"
+			;;
+		\?)
+			echo "Invalid Option: -$OPTARG" 1>&2
+			echo "Use \`murder -h\` to see help" 1>&2
+			exit 1
+			;;
+	esac
+done
+shift $((OPTIND -1))
+
+if (( $# == 0 )); then
+	echo "Use \`murder -h\` to see help" 1>&2
+	exit 1
+fi
+
+num=$(ps -A | grep -i ${regex} "$*" | grep -v grep | grep -v murder | wc -l | xargs)
+echo "Found ${num} matches"
+killer() {
+	while read data; do
+		if [[ "${useSudo}" = true ]]; then
+			sudo kill ${sig} "${data}"
+		else
+			kill ${sig} "${data}"
+		fi
+	done
+}
+ps -A | grep -i ${regex} "$*" | grep -v grep | grep -v murder | awk '{print $1}' | killer
+

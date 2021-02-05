@@ -1,0 +1,34 @@
+#!/bin/sh
+
+VIMSPECTOR_TEMPLATES="$HOME/.vimspector-confs"
+lang="python"
+while getopts ":hl:" opt; do
+	case ${opt} in
+		h)
+			echo
+			echo "Usage: vimspector [-h] [lang]"
+			echo "  -h     Display this help message."
+			echo "  [lang] Generate for specified language (default python)."
+			echo
+			exit 0
+			;;
+		\?)
+			echo "Invalid Option: -$OPTARG" 1>&2
+			echo "Use \`vimspector -h\` to see help" 1>&2
+			exit 1
+			;;
+	esac
+done
+shift $((OPTIND -1))
+
+if [[ ! -z "$*" ]]; then
+	lang="$*"
+fi
+
+template="$VIMSPECTOR_TEMPLATES/$lang.json"
+
+if [[ -f "$template" ]]; then
+	cp "$template" .vimspector.json
+else
+	echo "Template does not exist."
+fi

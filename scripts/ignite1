@@ -1,0 +1,6 @@
+#!/bin/zsh
+
+open /Applications/Reactotron.app &!
+/Applications/Xcode.app/Contents/Developer/Applications/Simulator.app/Contents/MacOS/Simulator -CurrentDeviceUDID 6AF6260A-6389-4C95-9E56-325548608301 >/dev/null 2>&1 &!
+sleep 5
+xcrun simctl launch booted com.eliblaney.cu.ignite >/dev/null 2>&1 &!

@@ -1,0 +1,59 @@
+export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow -g "!{.git,node_modules}/*" 2> /dev/null'
+
+alias vim="/usr/local/Cellar/vim/8.2.2100/bin/vim"
+alias v="vim"
+
+function project() {
+	local PROJECTS="$HOME/Documents/Projects"
+	if [ "$#" -eq 0 ]; then
+		cd $PROJECTS
+	elif [[ "$*" == *"/"* ]]; then
+		if [ -d "$PROJECTS/$*" ]; then
+			echo "$PROJECTS/$*"
+			cd "$PROJECTS/$*"
+		else
+			echo "Folder not found."
+			return 1
+		fi
+	else
+		local folder=$(find "$PROJECTS" -type d -iname "$**" -maxdepth 2 -print | sort -f | head -n 1)
+		if [ ${#folder} -ne 0 ]; then
+			echo $folder
+			cd $folder
+		else
+			echo "Folder not found."
+			return 1
+		fi
+	fi
+}
+alias ignite="tmuxinator start ignite"
+alias igniteb="project Ignite/ignite.eliblaney.com/api/v1/app"
+alias ignite2="$HOME/Documents/Projects/Ignite/Ignite.nosync/node_modules/react-native/scripts/launchPackager.command;"
+alias stop="tmuxinator stop"
+
+alias bashrc="vim ~/.zsh_profile && . ~/.zsh_profile"
+alias rc="vim ~/.zsh_profile && . ~/.zsh_profile"
+alias zshrc="vim ~/.zshrc && . ~/.zshrc"
+alias ds="rm ~/Desktop/.DS_Store; sudo find / -name '.DS_Store' -depth -exec rm {}"
+alias asm="rm *.o; rm *.out; /Library/nasm/nasm -f macho64 *.asm && ld -macosx_version_min 10.8 -lSystem *.o && ./*.out"
+alias disassemble="objdump -x86-asm-syntax=intel -d"
+alias pip3="sudo python3 -m pip"
+alias autotar="tar -czvf '$1.tar.gz' '$1'"
+alias npmi="npm install --save"
+alias esw="esw -w --clear --changed --color"
+alias ssh="TERM=xterm-256color ssh"
+alias ssh_eli="ssh -p <PORT> <USER>@<IP>"
+alias ssh_vps="mosh USER@IP"
+alias ssh_bc="ssh -p <PORT> <USER>@<IP>"
+alias drive="cd ~/Library/Mobile\ Documents/com~apple~CloudDocs/"
+alias vimrc="vim ~/.vimrc && vim +PluginInstall +qall; vim +VimspectorInstall +qall"
+alias school="cd ~/Documents/School"
+alias irc="irssi"
+alias icloud="cd ~/Library/Mobile\ Documents/com~apple~CloudDocs"
+alias hogs="sudo du -sh * 2>/dev/null | grep -E '\\d(?:\\d\\dM|\\.?\\d*?G)'"
+alias k="k -Ah --si"
+alias start_mysql="sudo /usr/local/mysql/support-files/mysql.server start"
+alias stop_mysql="sudo /usr/local/mysql/support-files/mysql.server stop"
+alias ip="/bin/sh ~/git/whereAmI/findmepls.sh"
+alias intel="arch -x86_64"
+alias fz='vim `find . | fzf`'
