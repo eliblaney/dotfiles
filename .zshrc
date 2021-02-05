@@ -82,6 +82,7 @@ plugins=(
 	k
 	zsh-z
 	zsh-autosuggestions
+	fzf-tab
 )
 
 source $ZSH/oh-my-zsh.sh
