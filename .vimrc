@@ -49,13 +49,13 @@ if v:version >= 800
 	Plugin 'Shougo/deol.nvim'
 endif
 " Git
-Plugin 'tpope/vim-fugitive'
+"Plugin 'tpope/vim-fugitive'
 Plugin 'tpope/vim-rhubarb'
 Plugin 'airblade/vim-gitgutter'
 " Linting (^l)
 Plugin 'dense-analysis/ale'
 " Languages
-Plugin 'sheerun/vim-polyglot'
+" Plugin 'sheerun/vim-polyglot'
 Plugin 'rust-lang/rust.vim'
 Plugin 'xsbeats/vim-blade'
 Plugin 'ap/vim-css-color'
@@ -276,20 +276,34 @@ let g:airline_symbols.readonly = ''
 let g:airline_symbols.linenr = ''
 let g:airline_symbols.linenr = ''
 
+augroup FiletypeGroup
+    autocmd!
+    au BufNewFile,BufRead *.jsx set filetype=javascript.jsx
+    au BufNewFile,BufRead *.ts set filetype=javascript.ts
+    au BufNewFile,BufRead *.tsx set filetype=javascript.tsx
+augroup END
+
 " ALE Configuration (auto-syntax-check / auto-linting)
+			" \   'python': ['flake8', 'pylint'],
 let g:ale_linters = {
-			\   'python': ['flake8', 'pylint'],
 			\   'javascript': ['eslint'],
+			\   'typescript': ['eslint'],
 			\   'php': ['phpcbf'],
 			\}
+
+			" \   'python': [
+			" \		'remove_trailing_lines',
+			" \		'trim_whitespace',
+			" \		'reorder-python-imports',
+			" \		'yapf',
+			" \	],
 let g:ale_fixers = {
-			\   'python': [
+			\   'javascript': [
 			\		'remove_trailing_lines',
 			\		'trim_whitespace',
-			\		'reorder-python-imports',
-			\		'yapf',
-			\	],
-			\   'javascript': [
+			\       'eslint',
+			\   ],
+			\   'typescript': [
 			\		'remove_trailing_lines',
 			\		'trim_whitespace',
 			\       'eslint',
@@ -349,6 +363,7 @@ augroup runbinds
 	autocmd! runbinds
 	autocmd FileType python map <C-h> <Esc>:w<CR>:!clear;python3 %<CR>
 	autocmd FileType rust map <C-h> :execute "!clear;cargo run"<CR>
+	autocmd FileType rust map <C-j> :execute "!clear;cargo test"<CR>
 augroup end
 
 " Git mappings
@@ -365,5 +380,8 @@ map <C-f> :Files<CR>
 map <C-g> :GFiles<CR>
 map <C-s> :Deol<CR>
 map <C-t> :NERDTreeToggle<CR>
-map <C-c> :NERDCommenterComment<CR>
+" map <C-c> :NERDCommenterComment<CR>
 map <C-m> :MaximizerToggle!<CR>
+
+nmap <C-c> :s#\C\(\<\u[a-z0-9]\+\\|[a-z0-9]\+\)\(\u\)#\l\1_\l\2#g<CR>
+vmap <C-c> :s#\C\(\<\u[a-z0-9]\+\\|[a-z0-9]\+\)\(\u\)#\l\1_\l\2#g<CR>
